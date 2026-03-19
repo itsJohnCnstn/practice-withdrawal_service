@@ -2,6 +2,8 @@ package dev.johncnstn.practicewithdrawal_service.account;
 
 import org.springframework.stereotype.Service;
 
+import static dev.johncnstn.practicewithdrawal_service.account.AccountExceptionSupplier.accountNotFoundExceptionSupplier;
+
 @Service
 class AccountService {
 
@@ -12,7 +14,8 @@ class AccountService {
     }
 
     AccountDTO getAccount(Long accountId) {
-        var accountEntity = accountRepository.findAccountById(accountId).orElseThrow(() -> new AccountNotFoundException("No account with such id: " + accountId));
+        var accountEntity = accountRepository.findAccountById(accountId)
+                .orElseThrow(accountNotFoundExceptionSupplier(accountId));
         return new AccountDTO(accountEntity.getId(), accountEntity.getAmount());
     }
 
